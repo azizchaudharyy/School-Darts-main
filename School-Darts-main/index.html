@@ -1,0 +1,177 @@
+<!-- Main HTML structure for the Darts Score Keeper application.
+     Provides layout, forms, tables, and containers used by the TypeScript logic. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Darts Score Keeper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header class="app-header">
+        <!-- Application title and subtitle -->
+        <h1>Darts Score Keeper</h1>
+        <p class="subtitle">
+            Single-page web app for keeping score in 301 / 501 darts legs and sets.
+        </p>
+    </header>
+
+    <!-- SETUP SECTION: Users enter player names, game type, and set size. -->
+    <main class="app-main">
+        <section class="card" aria-labelledby="setup-heading">
+            <!-- Form for configuring a new set -->
+            <h2 id="setup-heading">Set up set</h2>
+            <form id="setup-form">
+                <!-- Player name input -->
+                <div class="field-group">
+                    <label for="player1-name">Player 1 name</label>
+                    <input id="player1-name" name="player1" type="text" required value="Player 1" />
+                </div>
+                <!-- Player name input -->
+                <div class="field-group">
+                    <label for="player2-name">Player 2 name</label>
+                    <input id="player2-name" name="player2" type="text" required value="Player 2" />
+                </div>
+
+                <!-- Game configuration options -->
+                <div class="field-row">
+                    <div class="field-group">
+                        <label for="game-type">Game type</label>
+                        <select id="game-type" name="gameType">
+                            <option value="301">301 down</option>
+                            <option value="501" selected>501 down</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="max-legs">Set size (max legs)</label>
+                        <select id="max-legs" name="maxLegs">
+                            <option value="3">Best of 3</option>
+                            <option value="5" selected>Best of 5</option>
+                            <option value="7">Best of 7</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Start / reset controls -->
+                <button type="submit" class="primary-button">Start set</button>
+                <button type="button" id="reset-set-button" class="secondary-button">
+                    Reset all
+                </button>
+            </form>
+        </section>
+
+        <!-- STATUS SECTION: Displays current game, leg, active player, and score table. -->
+        <section class="card" aria-labelledby="status-heading">
+            <div class="card-header">
+                <h2 id="status-heading">Set &amp; leg status</h2>
+            </div>
+            <!-- Summary of current set and leg status -->
+            <div class="status-summary">
+                <div class="status-row">
+                    <span>Game:</span>
+                    <span id="status-game">–</span>
+                </div>
+                <div class="status-row">
+                    <span>Set (best of):</span>
+                    <span id="status-max-legs">–</span>
+                </div>
+                <div class="status-row">
+                    <span>Current leg:</span>
+                    <span id="status-leg-number">–</span>
+                </div>
+                <div class="status-row">
+                    <span>Next throw:</span>
+                    <span id="status-current-player">–</span>
+                </div>
+            </div>
+
+            <!-- Table listing players, legs won, and remaining score -->
+            <table class="score-table" aria-label="Players scores">
+                <thead>
+                    <tr>
+                        <th scope="col">Player</th>
+                        <th scope="col">Legs won</th>
+                        <th scope="col">Score left</th>
+                    </tr>
+                </thead>
+                <tbody id="players-table-body">
+                    <!-- filled by script -->
+                </tbody>
+            </table>
+
+            <!-- Dynamic status and feedback messages -->
+            <p id="message" class="message" aria-live="polite">
+                Start by creating a new set.
+            </p>
+        </section>
+
+        <!-- TURNS SECTION: Manages turn input and displays list of turns in the current leg. -->
+        <section class="card" aria-labelledby="turns-heading">
+            <div class="card-header">
+                <!-- Button to start a new leg once the current leg is finished -->
+                <h2 id="turns-heading">Turns in current leg</h2>
+                <button type="button" id="new-leg-button" class="secondary-button" disabled>
+                    Start next leg
+                </button>
+            </div>
+
+            <!-- Form for entering points scored in the current turn -->
+            <form id="turn-form" class="turn-form">
+                <fieldset>
+                    <legend class="visually-hidden">Add points for the current player</legend>
+                    <!-- Input + action buttons for recording or undoing a turn -->
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="points-input">Points scored</label>
+                            <input
+                                id="points-input"
+                                type="number"
+                                min="0"
+                                max="180"
+                                step="1"
+                                inputmode="numeric"
+                                required
+                            />
+                        </div>
+                        <button type="submit" id="add-turn-button" class="primary-button" disabled>
+                            Add turn
+                        </button>
+                        <button type="button" id="undo-turn-button" class="secondary-button" disabled>
+                            Remove last turn
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+
+            <!-- Table showing all turns taken in the current leg -->
+            <div class="table-wrapper">
+                <table class="turns-table" aria-label="List of turns in this leg">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Player</th>
+                            <th scope="col">Scored</th>
+                            <th scope="col">Score left</th>
+                        </tr>
+                    </thead>
+                    <tbody id="turns-table-body">
+                        <!-- filled by script -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with application credits -->
+    <footer class="app-footer">
+        <p>
+            Darts score keeper – example browser-side web application made with TypeScript.
+        </p>
+    </footer>
+
+    <!-- Load compiled TypeScript (main.js) -->
+    <script type="module" src="./dist/main.js"></script>
+</body>
+</html>
